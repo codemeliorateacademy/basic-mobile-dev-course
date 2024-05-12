@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/model/todo.dart';
 
 void main() {
   runApp(const ToDoApp());
@@ -31,12 +32,55 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  int _counter = 0;
+  final List<ToDo> _listOfToDoNotes = <ToDo>[];
+  final TextEditingController _textEditingController = TextEditingController();
 
-  void _incrementCounter() {
+  void _addNewToDoItem(String noteContent) {
     setState(() {
-      _counter++;
+      _listOfToDoNotes.add(ToDo(content: noteContent, isCompleted: false));
+      _textEditingController.clear();
     });
+  }
+
+  Future<void> _showAddItemPopup() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Create a New To-Do Note"),
+            content: TextField(
+              controller: _textEditingController,
+              decoration: const InputDecoration(hintText: "Enter your notes here"),
+              autofocus: true,
+            ),
+            actions: <Widget>[
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _addNewToDoItem(_textEditingController.text);
+                },
+                child: const Text('Add'),
+              ),
+            ],
+          );
+        }
+    );
   }
 
   @override
@@ -50,22 +94,13 @@ class _ToDoListState extends State<ToDoList> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button ',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const Text(
-              ' many times!',
-            ),
+
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () => _showAddItemPopup(),
+        tooltip: 'Add New To-Do',
         child: const Icon(Icons.add),
       ),
     );
