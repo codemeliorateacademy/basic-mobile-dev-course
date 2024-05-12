@@ -49,6 +49,12 @@ class _ToDoListState extends State<ToDoList> {
     });
   }
 
+  void _onToDoDeleteAction(ToDo todoToDelete) {
+    setState(() {
+      _listOfToDoNotes.removeWhere((element) => element.content == todoToDelete.content);
+    });
+  }
+
   Future<void> _showAddItemPopup() async {
     return showDialog(
         context: context,
@@ -105,6 +111,7 @@ class _ToDoListState extends State<ToDoList> {
                     ToDoItem(
                         todo: aToDo,
                         onCheckAction: _onToDoCheckAction,
+                        onDeleteAction: _onToDoDeleteAction,
                     )
                   );
                 }).toList(),
