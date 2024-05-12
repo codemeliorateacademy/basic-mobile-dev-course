@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/model/todo.dart';
+import 'package:test_flutter/ui/todo_item.dart';
 
 void main() {
   runApp(const ToDoApp());
@@ -12,12 +13,12 @@ class ToDoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'To-Do Notes',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      home: const ToDoList(title: 'Flutter Demo Home Page'),
+      home: const ToDoList(title: 'To-Do List'),
     );
   }
 }
@@ -39,6 +40,12 @@ class _ToDoListState extends State<ToDoList> {
     setState(() {
       _listOfToDoNotes.add(ToDo(content: noteContent, isCompleted: false));
       _textEditingController.clear();
+    });
+  }
+
+  void _onToDoCheckAction(ToDo changedToDo) {
+    setState(() {
+      changedToDo.isCompleted = !changedToDo.isCompleted;
     });
   }
 
@@ -90,14 +97,18 @@ class _ToDoListState extends State<ToDoList> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
-          ],
-        ),
-      ),
+      body: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              children:
+                _listOfToDoNotes.map((ToDo aToDo) {
+                  return (
+                    ToDoItem(
+                        todo: aToDo,
+                        onCheckAction: _onToDoCheckAction,
+                    )
+                  );
+                }).toList(),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddItemPopup(),
         tooltip: 'Add New To-Do',
