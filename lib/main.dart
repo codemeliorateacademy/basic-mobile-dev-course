@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ToDoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ToDoApp extends StatelessWidget {
+  const ToDoApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -13,24 +13,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ToDoList(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class ToDoList extends StatefulWidget {
+  const ToDoList({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ToDoList> createState() => _ToDoListState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ToDoListState extends State<ToDoList> {
   int _counter = 0;
 
   void _incrementCounter() {
